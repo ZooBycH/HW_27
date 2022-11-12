@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "hw-27"
+version = "0.1.0"
+description = ""
+authors = ["ZooBycH <mz88@list.ru>"]
+readme = "README.md"
+packages = [{include = "hw_27"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+psycopg2 = "^2.9.5"
+pillow = "^9.3.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
