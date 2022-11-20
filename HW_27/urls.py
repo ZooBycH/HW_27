@@ -21,11 +21,13 @@ from rest_framework import routers
 from HW_27 import settings
 from ads.views.ad import *
 from ads.views.category import *
+from ads.views.selection import SelectionViewSet
 from users.views import LocationViewSet
 
 router = routers.SimpleRouter()
 router.register('location', LocationViewSet)
 router.register('ad', AdViewSet)
+router.register('selection', SelectionViewSet)
 
 urlpatterns = [
     path('', root),
