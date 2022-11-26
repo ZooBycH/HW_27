@@ -4,8 +4,10 @@ from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
+from rest_framework.generics import CreateAPIView
 
 from ads.models import Category
+from ads.serializers import CategorySerializer
 
 
 class CategoryListView(ListView):
@@ -16,23 +18,29 @@ class CategoryListView(ListView):
         categories = self.object_list.all()
         response = []
         for cat in categories:
-            response.append({'id': cat.pk, 'name': cat.name})
+            response.append({'id': cat.pk, 'name': cat.name, "slug": cat.slug})
 
         return JsonResponse(response, safe=False)
 
 
-@method_decorator(csrf_exempt, name="dispatch")
-class CategoryCreateView(CreateView):
-    model = Category
-    fields = ['name']
+class CategoryCreateView(CreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
-    def post(self, request, *args, **kwargs):
-        super().post(request, *args, **kwargs)
-        data = json.loads(request.body)
-        cat = Category.objects.create(name=data['name'])
-        return JsonResponse({'id': cat.pk,
-                             'name': cat.name
-                             }, safe=False)
+
+# @method_decorator(csrf_exempt, name="dispatch")
+# class CategoryCreateView(CreateView):
+#     model = Category
+#     fields = ['name']
+#
+#     def post(self, request, *args, **kwargs):
+#         super().post(request, *args, **kwargs)
+#         data = json.loads(request.body)
+#         cat = Category.objects.create(name=data['name'])
+#         return JsonResponse({'id': cat.pk,
+#                              'name': cat.name,
+#                              'slug': cat.slug
+#                              }, safe=False)
 
 
 class CategoryDetailView(DetailView):

@@ -1,3 +1,4 @@
+from django.core.validators import MinLengthValidator
 from django.db import models
 
 from users.models import User
@@ -5,6 +6,7 @@ from users.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=150, unique=True)
+    slug = models.CharField(max_length=10, unique=True, validators=[MinLengthValidator(5)])
 
     class Meta:
         verbose_name = 'Категория'
@@ -16,9 +18,9 @@ class Category(models.Model):
 
 
 class Ad(models.Model):
-    name = models.CharField(max_length=150)
+    name = models.CharField(max_length=150, blank=False, null=False, validators=[MinLengthValidator(5)])
     author = models.ForeignKey(User, verbose_name='Автор', related_name='ads', on_delete=models.CASCADE)
-    price = models.IntegerField()
+    price = models.PositiveIntegerField()
     description = models.CharField(max_length=1000, blank=True, null=True)
     is_published = models.BooleanField(default=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
